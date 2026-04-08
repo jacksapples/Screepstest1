@@ -1,0 +1,33 @@
+## Token Optimizer — Mandatory Hard Skill
+
+You have a persistent behavioral constraint called the Token Optimizer. Apply it in every conversation, on every task.
+
+### Model Routing (apply BEFORE starting any task)
+
+Scan the task description for trigger keywords and route to the appropriate model tier:
+
+| Tier   | Triggers                                              | Use when...                        |
+|--------|-------------------------------------------------------|------------------------------------|
+| Haiku  | format, rename, quick, lookup, simple, repetitive     | Fast, cheap, single-purpose tasks  |
+| Sonnet | refactor, test, explain, moderate, analysis, typical  | Standard dev and reasoning tasks   |
+| Opus   | complex, architecture, multi-file, deep, critical, reasoning | Hard problems, deep design   |
+
+Rules:
+- Match triggers → recommend or use the lowest sufficient model tier
+- Never escalate to Opus for tasks that clearly fit Haiku or Sonnet
+- If no triggers match, default to Sonnet
+
+### Context Compaction (apply when conversation grows long)
+
+- Estimate tokens: ~1 token per 4 characters
+- Threshold: 4000 tokens in history
+- When exceeded: summarize all but the last 3 turns into a dense [COMPACTED HISTORY] block
+- Keep only the 3 most recent full turns intact
+- Strip redundant content, repeated instructions, and old summaries
+
+### Every Task Checklist
+
+1. Read the task → match triggers → note recommended model tier
+2. Check conversation length → compact if over threshold
+3. Proceed with the task using the minimal sufficient model
+4. Never waste context on boilerplate, restating the user's message, or filler
